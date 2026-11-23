@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Apex DMS - Wireframes (50% del Producto) y Diseño de Reportes (HU-02)</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f1f5f9; color: #1e293b; margin: 24px; }
+  h1, h2 { color: #0f172a; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 20px; }
+  .wireframe { background: #fff; border: 2px solid #cbd5e1; border-radius: 8px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .wf-header { background: #1e293b; color: #fff; padding: 8px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; margin-bottom: 12px; }
+  .box { border: 1px dashed #94a3b8; padding: 10px; border-radius: 4px; margin-bottom: 10px; background: #f8fafc; font-size: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  th, td { border: 1px solid #cbd5e1; padding: 6px; text-align: left; }
+  th { background: #e2e8f0; }
+  .btn { display: inline-block; padding: 4px 10px; background: #2563eb; color: #fff; border-radius: 4px; font-size: 11px; }
+</style>
+</head>
+<body>
+<h1>Apex DMS – Modelado de Interfaces (50% del Producto) y Reportes (HU-02)</h1>
+<p>Prototipos de baja/media fidelidad correspondientes al Sprint 1 (6 de los 11 módulos del sistema + 2 Reportes operativos).</p>
+
+<div class="grid">
+  <div class="wireframe">
+    <div class="wf-header">WF-01 | Inicio de Sesión y Control RBAC (HU-05)</div>
+    <div class="box" style="text-align:center;">
+      <strong>APEX DMS CLOUD</strong><br><br>
+      [ Campo: Usuario ]<br><br>
+      [ Campo: Contraseña (BCrypt) ]<br><br>
+      <span class="btn">Acceder al sistema</span>
+    </div>
+  </div>
+
+  <div class="wireframe">
+    <div class="wf-header">WF-02 | Configuración de la Organización / Taller (HU-06)</div>
+    <div class="box">
+      Razón Social: [___________________] | CIF: [___________]<br>
+      Dirección Fiscal: [______________________________]<br>
+      Tarifa Mano de Obra (€/UT): [ 48.00 ] | IVA Defecto (%): [ 21.00 ]<br><br>
+      <span class="btn">Guardar Configuración</span>
+    </div>
+  </div>
+
+  <div class="wireframe">
+    <div class="wf-header">WF-03 | Cartera de Clientes y Parque de Vehículos (HU-07 / HU-08)</div>
+    <div class="box">Buscador: [ Matrícula / DNI / Nombre ] <span class="btn">+ Nuevo Cliente</span> <span class="btn">+ Nuevo Vehículo</span></div>
+    <table>
+      <tr><th>DNI/CIF</th><th>Cliente</th><th>Matrícula</th><th>Vehículo</th><th>Acciones</th></tr>
+      <tr><td>12345678A</td><td>Juan Pérez</td><td>1234-LBC</td><td>Toyota Corolla</td><td>Ver | Editar | Baja</td></tr>
+    </table>
+  </div>
+
+  <div class="wireframe">
+    <div class="wf-header">WF-04 | Catálogo Técnico de Servicios / Temparario (HU-09)</div>
+    <table>
+      <tr><th>Cód.</th><th>Operación</th><th>Familia</th><th>UT</th><th>Precio Base</th></tr>
+      <tr><td>SRV-01</td><td>Revisión mantenimiento 15.000 km</td><td>Mantenimiento</td><td>1.50</td><td>72,00 €</td></tr>
+      <tr><td>SRV-02</td><td>Sustitución pastillas freno del.</td><td>Frenos</td><td>1.00</td><td>48,00 €</td></tr>
+    </table>
+  </div>
+
+  <div class="wireframe">
+    <div class="wf-header">WF-05 | Circuito Operativo: Orden de Reparación (HU-10 / HU-11)</div>
+    <div class="box">
+      <strong>OR-2026-0001</strong> | Vehículo: 1234-LBC | Km: 64.500 | Estado: [ EN_REPARACION v ]<br>
+      Asesor: Laura Gómez | Mecánico asignado: Carlos Ruiz
+    </div>
+    <table>
+      <tr><th>Concepto / Servicio</th><th>UT / Cant.</th><th>Precio Unit.</th><th>Subtotal</th></tr>
+      <tr><td>Revisión 15.000 km</td><td>1.50</td><td>48,00 €</td><td>72,00 €</td></tr>
+    </table>
+    <p style="text-align:right; font-size:12px;"><strong>Base: 72,00 € | IVA (21%): 15,12 € | TOTAL: 87,12 €</strong></p>
+  </div>
+
+  <div class="wireframe">
+    <div class="wf-header">WF-06 | Panel Estadístico y Alertas Autónomas (HU-12 / HU-14)</div>
+    <div class="box">KPIs: [ OR Abiertas: 6 ] [ En Curso: 4 ] [ Finalizadas Mes: 28 ] [ Facturación Est.: 6.420 € ]</div>
+    <div class="box"><strong>Alertas generadas autónomamente:</strong> 3 vehículos superan 12 meses desde última OR.</div>
+  </div>
+</div>
+
+<h2>Modelado de Salidas (Reportes del Circuito OR - HU-13)</h2>
+<div class="grid">
+  <div class="wireframe">
+    <div class="wf-header">REPORTE 1 | Resguardo de Depósito / Orden de Reparación (PDF)</div>
+    <div class="box">
+      <strong>Cabecera:</strong> Datos dinámicos de la tabla <code>organizacion</code> (Razón Social, CIF, Dirección).<br>
+      <strong>Cuerpo:</strong> Datos Cliente + Vehículo (Matrícula, VIN, Km) + Síntomas + Tabla de Líneas de Intervención.<br>
+      <strong>Pie:</strong> Desglose Base Imponible, IVA, Total y recuadro de firma de conformidad del cliente.
+    </div>
+  </div>
+  <div class="wireframe">
+    <div class="wf-header">REPORTE 2 | Informe de Órdenes por Estado y Periodo</div>
+    <div class="box">
+      <strong>Filtros:</strong> Fecha Inicio, Fecha Fin, Estado de OR, Mecánico.<br>
+      <strong>Salida:</strong> Tabla resumen con Nº OR, Fecha, Matrícula, Estado, Importe Total y sumatorio global del periodo.
+    </div>
+  </div>
+</div>
+</body>
+</html>

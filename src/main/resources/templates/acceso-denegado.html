@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Acceso Denegado')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container text-center mt-5">
+    <div class="alert alert-danger d-inline-block p-4 shadow-sm">
+        <h4 class="fw-bold">Acceso Restringido (Error 403)</h4>
+        <p class="mb-3">Tu perfil funcional no cuenta con permisos para acceder a esta sección de Apex DMS.</p>
+        <a th:href="@{/dashboard}" class="btn btn-dark btn-sm">Volver al Panel Principal</a>
+    </div>
+</div>
+</body>
+</html>

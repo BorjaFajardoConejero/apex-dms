@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Panel Principal')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container">
+    <div class="p-4 bg-white rounded shadow-sm mb-4">
+        <h3 class="fw-bold mb-1">Bienvenido a Apex DMS</h3>
+        <p class="text-muted mb-0">
+            Sesión iniciada como <strong th:text="${username}"></strong> |
+            Perfil activo: <span class="badge bg-info text-dark" th:text="${roles}"></span>
+        </p>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4" sec:authorize="hasRole('ADMIN')">
+            <div class="card h-100 border-primary shadow-sm">
+                <div class="card-body">
+                    <span class="badge bg-success mb-2">Sprint 1 - Operativo</span>
+                    <h5 class="card-title fw-bold">Usuarios y Perfiles (CRUD 1)</h5>
+                    <p class="card-text small text-muted">Alta, consulta, modificación y baja lógica del personal del taller con control RBAC.</p>
+                    <a th:href="@{/usuarios}" class="btn btn-primary btn-sm">Gestionar usuarios</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" sec:authorize="hasAnyRole('ADMIN','ASESOR')">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <span class="badge bg-secondary mb-2">Sprint 2 - Planificado</span>
+                    <h5 class="card-title fw-bold">Taller, Clientes y Vehículos</h5>
+                    <p class="card-text small text-muted">Configuración de la organización y entidades básicas del taller (HU-06 a HU-09).</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" sec:authorize="hasAnyRole('ADMIN','ASESOR','MECANICO')">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <span class="badge bg-secondary mb-2">Sprint 3 - Planificado</span>
+                    <h5 class="card-title fw-bold">Órdenes de Reparación (OR)</h5>
+                    <p class="card-text small text-muted">Circuito operativo completo de taller, líneas de intervención y estados (HU-10 y HU-11).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalle de Usuario')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container">
+    <div class="card shadow-sm col-md-7 mx-auto">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Ficha de Usuario</h5>
+            <span class="badge bg-info text-dark" th:text="${usuario.rol.nombre}"></span>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">ID:</dt><dd class="col-sm-8" th:text="${usuario.id}"></dd>
+                <dt class="col-sm-4">Username:</dt><dd class="col-sm-8" th:text="${usuario.username}"></dd>
+                <dt class="col-sm-4">Nombre Completo:</dt><dd class="col-sm-8" th:text="${usuario.nombreCompleto}"></dd>
+                <dt class="col-sm-4">Email:</dt><dd class="col-sm-8" th:text="${usuario.email}"></dd>
+                <dt class="col-sm-4">Estado:</dt><dd class="col-sm-8" th:text="${usuario.activo} ? 'Activo' : 'Baja lógica'"></dd>
+                <dt class="col-sm-4">Fecha de alta:</dt><dd class="col-sm-8" th:text="${usuario.fechaCreacion}"></dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a th:href="@{/usuarios}" class="btn btn-secondary btn-sm">Volver al listado</a>
+            <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-primary btn-sm">Editar</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

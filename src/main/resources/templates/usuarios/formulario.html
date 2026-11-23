@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Formulario de Usuario')}"></head>
+<body class="bg-light">
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0" th:text="${esNuevo} ? 'Alta de Nuevo Usuario' : 'Editar Usuario'"></h5>
+                </div>
+                <div class="card-body">
+                    <div th:if="${error}" class="alert alert-danger py-2" th:text="${error}"></div>
+                    <form th:action="${esNuevo} ? @{/usuarios/guardar} : @{/usuarios/actualizar/{id}(id=${usuario.id})}"
+                          th:object="${usuario}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre de usuario</label>
+                            <input type="text" th:field="*{username}" class="form-control" th:readonly="${!esNuevo}" required>
+                            <div class="text-danger small" th:errors="*{username}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre completo</label>
+                            <input type="text" th:field="*{nombreCompleto}" class="form-control" required>
+                            <div class="text-danger small" th:errors="*{nombreCompleto}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Correo electrónico</label>
+                            <input type="email" th:field="*{email}" class="form-control" required>
+                            <div class="text-danger small" th:errors="*{email}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Perfil / Rol funcional</label>
+                            <select name="rolId" class="form-select" required>
+                                <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.nombre + ' - ' + r.descripcion}"
+                                        th:selected="${usuario.rol != null and usuario.rol.id == r.id}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" th:text="${esNuevo} ? 'Contraseña (mín. 6 caracteres)' : 'Nueva contraseña (dejar vacío para mantener)'"></label>
+                            <input type="password" name="rawPassword" class="form-control" th:required="${esNuevo}">
+                            <div class="text-danger small" th:if="${passwordError}" th:text="${passwordError}"></div>
+                        </div>
+                        <div class="form-check mb-3" th:if="${!esNuevo}">
+                            <input class="form-check-input" type="checkbox" th:field="*{activo}" id="activoCheck">
+                            <label class="form-check-label" for="activoCheck">Usuario activo</label>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
