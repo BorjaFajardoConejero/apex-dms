@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex DMS – Modelo Conceptual (EER) y Modelo Relacional (3FN)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    margin: 0;
+    padding: 24px;
+  }
+  .container {
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  header {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #ffffff;
+    padding: 22px 28px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  }
+  header h1 {
+    margin: 0 0 6px 0;
+    font-size: 22px;
+  }
+  header p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 13.5px;
+  }
+  .section-card {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  }
+  .section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  .section-title h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #0f172a;
+  }
+  .badge {
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .note-box {
+    background: #f1f5f9;
+    border-left: 4px solid #2563eb;
+    padding: 10px 12px;
+    border-radius: 4px;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>APEX DMS – Modelado Conceptual (EER) y Modelo Relacional (3FN)</h1>
+    <p>Proyecto de Ingeniería del Software (47GIIN - VIU) | Historia de Usuario HU-01 (Sprint 1) | Autor: Borja Fajardo Conejero</p>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 1: MODELO CONCEPTUAL ENTIDAD-RELACIÓN EXTENDIDO (EER)         -->
+  <!-- ===================================================================== -->
+  <div class="section-card">
+    <div class="section-title">
+      <h2>1. Modelo Conceptual: Diagrama Entidad-Relación Extendido (EER)</h2>
+      <span class="badge">Nivel Conceptual – Abstracción de Dominio</span>
+    </div>
+
+    <div class="notes-grid">
+      <div class="note-box">
+        <strong>Jerarquías de Especialización (EER):</strong><br>
+        • <b>USUARIO</b> se especializa de forma disjunta (<code>d</code>) en <i>Administrador</i>, <i>Asesor</i> y <i>Mecánico</i> según sus responsabilidades operativas.<br>
+        • <b>CLIENTE</b> se especializa en <i>Particular</i> y <i>Empresa</i>.
+      </div>
+      <div class="note-box">
+        <strong>Entidad Débil e Identificación:</strong><br>
+        • <b>LINEA_OR</b> (doble borde) depende existencialmente de <b>ORDEN_REPARACION</b>, imputando servicios (mano de obra en UT) o recambios.
+      </div>
+      <div class="note-box">
+        <strong>Reglas de Transformación a 3FN:</strong><br>
+        • Las jerarquías <code>d</code> se transforman mediante discriminador/FK (<code>id_rol</code>, <code>tipo_cliente</code>) evitando uniones innecesarias.<br>
+        • Las relaciones <code>1:N</code> propagan la PK del lado <code>1</code> como FK en el lado <code>N</code>.
+      </div>
+    </div>
+
+    <!-- SVG MODELO CONCEPTUAL EER -->
+    <svg viewBox="0 0 1240 730" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+        </marker>
+      </defs>
+
+      <!-- Leyenda superior -->
+      <rect x="20" y="15" width="1200" height="36" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <rect x="35" y="24" width="24" height="16" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="66" y="36" font-size="11.5" fill="#334155" font-weight="600">Entidad Fuerte</text>
+
+      <rect x="175" y="23" width="26" height="18" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="178" y="26" width="20" height="12" fill="none" stroke="#d97706" stroke-width="1"/>
+      <text x="208" y="36" font-size="11.5" fill="#334155" font-weight="600">Entidad Débil</text>
+
+      <polygon points="325,22 340,32 325,42 310,32" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="347" y="36" font-size="11.5" fill="#334155" font-weight="600">Interrelación</text>
+
+      <circle cx="450" cy="32" r="10" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="450" y="36" font-size="11" fill="#7e22ce" font-weight="700" text-anchor="middle">d</text>
+      <text x="467" y="36" font-size="11.5" fill="#334155" font-weight="600">Especialización Disjunta (EER)</text>
+
+      <rect x="675" y="24" width="24" height="16" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="706" y="36" font-size="11.5" fill="#334155" font-weight="600">Entidad de Soporte / Auditoría</text>
+
+      <!-- ==================== CONECTORES Y CARDINALIDADES ==================== -->
+      <g stroke="#475569" stroke-width="1.5" fill="none">
+        <!-- CLIENTE - Especialización -->
+        <line x1="130" y1="150" x2="130" y2="188"/>
+        <line x1="120" y1="205" x2="75" y2="245"/>
+        <line x1="140" y1="205" x2="185" y2="245"/>
+
+        <!-- CLIENTE - POSEE - VEHICULO -->
+        <line x1="205" y1="125" x2="295" y2="125"/>
+        <line x1="365" y1="125" x2="455" y2="125"/>
+
+        <!-- MARCA - TIENE - MODELO - PERTENECE - VEHICULO -->
+        <line x1="770" y1="90" x2="690" y2="90"/>
+        <line x1="620" y1="90" x2="530" y2="90"/>
+        <line x1="530" y1="100" x2="530" y2="105"/>
+
+        <!-- CLIENTE - RESERVA - CITA - VEHICULO -->
+        <line x1="205" y1="140" x2="295" y2="215"/>
+        <line x1="355" y1="225" x2="455" y2="225"/>
+        <line x1="530" y1="148" x2="530" y2="202"/>
+
+        <!-- USUARIO - Especialización -->
+        <line x1="1040" y1="150" x2="1040" y2="188"/>
+        <line x1="1028" y1="202" x2="925" y2="245"/>
+        <line x1="1040" y1="208" x2="1040" y2="245"/>
+        <line x1="1052" y1="202" x2="1155" y2="245"/>
+
+        <!-- ASESOR - GESTIONA - CITA -->
+        <line x1="875" y1="265" x2="605" y2="225"/>
+
+        <!-- USUARIO - REGISTRA - AUDIT_LOG -->
+        <line x1="1115" y1="125" x2="1145" y2="125"/>
+
+        <!-- VEHICULO - GENERA - ORDEN_REPARACION -->
+        <line x1="530" y1="148" x2="530" y2="335"/>
+        <line x1="530" y1="395" x2="530" y2="435"/>
+
+        <!-- ASESOR - ABRE - OR -->
+        <line x1="925" y1="285" x2="625" y2="445"/>
+        <!-- MECANICO - EJECUTA - OR -->
+        <line x1="1155" y1="285" x2="625" y2="460"/>
+
+        <!-- OR - CONTIENE (Doble) - LINEA_OR -->
+        <line x1="530" y1="485" x2="530" y2="545"/>
+        <line x1="530" y1="605" x2="530" y2="645"/>
+
+        <!-- SERVICIO - FAMILIA_SERVICIO -->
+        <line x1="175" y1="455" x2="175" y2="405"/>
+        <line x1="175" y1="355" x2="175" y2="330"/>
+
+        <!-- SERVICIO - IMPUTA - LINEA_OR -->
+        <line x1="255" y1="480" x2="440" y2="665"/>
+
+        <!-- RECAMBIO - CATEGORIA & PROVEEDOR -->
+        <line x1="150" y1="610" x2="90" y2="655"/>
+        <line x1="210" y1="610" x2="270" y2="655"/>
+
+        <!-- RECAMBIO - CONSUME - LINEA_OR -->
+        <line x1="255" y1="585" x2="440" y2="675"/>
+
+        <!-- OR - ORIGINA - FACTURA - FORMA_PAGO -->
+        <line x1="625" y1="470" x2="740" y2="470"/>
+        <line x1="810" y1="470" x2="890" y2="470"/>
+        <line x1="1020" y1="470" x2="1085" y2="470"/>
+
+        <!-- VEHICULO / OR - ALERTA_MANTENIMIENTO -->
+        <line x1="605" y1="135" x2="885" y2="365"/>
+        <line x1="625" y1="455" x2="885" y2="380"/>
+      </g>
+
+      <!-- Cardinalidades -->
+      <g font-size="11" font-weight="700" fill="#0f172a">
+        <text x="215" y="118">(1,1)</text>
+        <text x="420" y="118">(0,N)</text>
+        <text x="740" y="83">(1,1)</text>
+        <text x="545" y="83">(1,N)</text>
+        <text x="538" y="325">(1,1)</text>
+        <text x="538" y="425">(0,N)</text>
+        <text x="538" y="535">(1,1)</text>
+        <text x="538" y="636">(1,N)</text>
+        <text x="635" y="463">(1,1)</text>
+        <text x="855" y="463">(0,1)</text>
+        <text x="1030" y="463">(1,N)</text>
+      </g>
+
+      <!-- ==================== ENTIDADES Y RELACIONES ==================== -->
+      <!-- ORGANIZACION (Parametrización global) -->
+      <rect x="20" y="65" width="185" height="36" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="112" y="87" font-size="11.5" font-weight="700" text-anchor="middle">ORGANIZACION (Taller)</text>
+
+      <!-- CLIENTE + Especialización -->
+      <rect x="55" y="110" width="150" height="40" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="130" y="134" font-size="12" font-weight="700" text-anchor="middle">CLIENTE</text>
+
+      <circle cx="130" cy="198" r="12" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="130" y="202" font-size="11.5" font-weight="700" fill="#7e22ce" text-anchor="middle">d</text>
+
+      <rect x="20" y="245" width="100" height="32" rx="4" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="70" y="265" font-size="11" font-weight="700" text-anchor="middle">PARTICULAR</text>
+
+      <rect x="135" y="245" width="100" height="32" rx="4" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="185" y="265" font-size="11" font-weight="700" text-anchor="middle">EMPRESA</text>
+
+      <!-- Rombo POSEE -->
+      <polygon points="330,102 365,125 330,148 295,125" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="330" y="129" font-size="10.5" font-weight="700" text-anchor="middle">POSEE</text>
+
+      <!-- VEHICULO -->
+      <rect x="455" y="105" width="150" height="43" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="530" y="131" font-size="12" font-weight="700" text-anchor="middle">VEHICULO</text>
+
+      <!-- MODELO y MARCA -->
+      <rect x="615" y="70" width="95" height="34" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="662" y="91" font-size="11" font-weight="700" text-anchor="middle">MODELO</text>
+
+      <rect x="765" y="70" width="95" height="34" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="812" y="91" font-size="11" font-weight="700" text-anchor="middle">MARCA</text>
+
+      <!-- CITA -->
+      <rect x="455" y="202" width="150" height="40" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="530" y="226" font-size="12" font-weight="700" text-anchor="middle">CITA PREVIA</text>
+
+      <!-- USUARIO + Especialización -->
+      <rect x="965" y="105" width="150" height="45" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="1040" y="132" font-size="12" font-weight="700" text-anchor="middle">USUARIO</text>
+
+      <circle cx="1040" cy="198" r="12" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="1040" y="202" font-size="11.5" font-weight="700" fill="#7e22ce" text-anchor="middle">d</text>
+
+      <rect x="860" y="245" width="110" height="34" rx="4" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="915" y="266" font-size="10.5" font-weight="700" text-anchor="middle">ASESOR</text>
+
+      <rect x="985" y="245" width="110" height="34" rx="4" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="1040" y="266" font-size="10.5" font-weight="700" text-anchor="middle">ADMIN</text>
+
+      <rect x="1110" y="245" width="110" height="34" rx="4" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+      <text x="1165" y="266" font-size="10.5" font-weight="700" text-anchor="middle">MECANICO</text>
+
+      <!-- AUDIT_LOG -->
+      <rect x="1145" y="105" width="80" height="45" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="1185" y="125" font-size="10" font-weight="700" text-anchor="middle">AUDIT</text>
+      <text x="1185" y="139" font-size="10" font-weight="700" text-anchor="middle">LOGS</text>
+
+      <!-- Rombo GENERA -->
+      <polygon points="530,335 570,365 530,395 490,365" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="530" y="369" font-size="10" font-weight="700" text-anchor="middle">GENERA</text>
+
+      <!-- ORDEN_REPARACION (Núcleo) -->
+      <rect x="435" y="435" width="190" height="50" rx="5" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+      <text x="530" y="458" font-size="12" font-weight="700" fill="#1e3a8a" text-anchor="middle">ORDEN_REPARACION</text>
+      <text x="530" y="474" font-size="10" fill="#1e40af" text-anchor="middle">(Circuito Operativo Principal)</text>
+
+      <!-- Rombo CONTIENE (Doble borde - Identificador) -->
+      <polygon points="530,545 572,575 530,605 488,575" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <polygon points="530,551 564,575 530,599 496,575" fill="none" stroke="#d97706" stroke-width="1"/>
+      <text x="530" y="579" font-size="9.5" font-weight="700" text-anchor="middle">CONTIENE</text>
+
+      <!-- ENTIDAD DÉBIL: LINEA_OR -->
+      <rect x="440" y="645" width="180" height="52" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <rect x="444" y="649" width="172" height="44" rx="2" fill="none" stroke="#d97706" stroke-width="1"/>
+      <text x="530" y="669" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">LINEA_OR</text>
+      <text x="530" y="684" font-size="10" fill="#92400e" text-anchor="middle">(Entidad Débil de Detalle)</text>
+
+      <!-- FAMILIA_SERVICIO y SERVICIO -->
+      <rect x="95" y="300" width="160" height="32" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="175" y="320" font-size="11" font-weight="700" text-anchor="middle">FAMILIA_SERVICIO</text>
+
+      <rect x="95" y="455" width="160" height="42" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="175" y="480" font-size="11.5" font-weight="700" text-anchor="middle">SERVICIO (UT)</text>
+
+      <!-- RECAMBIO, CATEGORIA y PROVEEDOR -->
+      <rect x="95" y="568" width="160" height="42" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="175" y="593" font-size="11.5" font-weight="700" text-anchor="middle">RECAMBIO</text>
+
+      <rect x="20" y="655" width="140" height="32" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="90" y="675" font-size="10.5" font-weight="700" text-anchor="middle">CATEGORIA_REC.</text>
+
+      <rect x="195" y="655" width="140" height="32" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="265" y="675" font-size="10.5" font-weight="700" text-anchor="middle">PROVEEDOR</text>
+
+      <!-- ALERTA_MANTENIMIENTO (Proceso autónomo HU-12) -->
+      <rect x="885" y="348" width="230" height="42" rx="4" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+      <text x="1000" y="367" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">ALERTA_MANTENIMIENTO</text>
+      <text x="1000" y="381" font-size="9.5" fill="#047857" text-anchor="middle">(Generada autónomamente - HU-12)</text>
+
+      <!-- Rombo ORIGINA + FACTURA + FORMA_PAGO -->
+      <polygon points="775,447 810,470 775,493 740,470" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="775" y="474" font-size="9.5" font-weight="700" text-anchor="middle">ORIGINA</text>
+
+      <rect x="890" y="450" width="130" height="40" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="955" y="474" font-size="11.5" font-weight="700" text-anchor="middle">FACTURA</text>
+
+      <rect x="1085" y="450" width="135" height="40" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="1152" y="474" font-size="11" font-weight="700" text-anchor="middle">FORMA_PAGO</text>
+    </svg>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- SECCIÓN 2: MODELO RELACIONAL NORMALIZADO (3FN - ESQUEMA DE TABLAS)    -->
+  <!-- ===================================================================== -->
+  <div class="section-card">
+    <div class="section-title">
+      <h2>2. Modelo Relacional Normalizado (Tercera Forma Normal – 3FN)</h2>
+      <span class="badge">Nivel Lógico – 19 Tablas MySQL (15 CRUDs + 2 Soporte)</span>
+    </div>
+
+    <div class="notes-grid">
+      <div class="note-box">
+        <strong>1FN y 2FN (Atomicidad y Dependencia Completa):</strong><br>
+        Todos los atributos son atómicos y las tablas asociativas con clave compuesta se identifican mediante PK subrogada + restricción <code>UNIQUE</code> (ej. <code>uk_marca_modelo</code>).
+      </div>
+      <div class="note-box">
+        <strong>3FN (Eliminación de Dependencias Transitivas):</strong><br>
+        Datos como <i>Marca</i>, <i>Familia de Servicio</i>, <i>Categoría</i> o <i>Rol</i> se extraen a tablas maestras independientes para evitar anomalías de actualización.
+      </div>
+      <div class="note-box">
+        <strong>Integridad Referencial (InnoDB):</strong><br>
+        Las claves foráneas (<code>FK</code>) garantizan la consistencia entre bloques, destacando <code>ON DELETE CASCADE</code> en <code>lineas_or</code> respecto a <code>ordenes_reparacion</code>.
+      </div>
+    </div>
+
+    <!-- SVG MODELO RELACIONAL 3FN -->
+    <svg viewBox="0 0 1240 820" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grupos visuales de módulos -->
+      <rect x="15" y="15" width="380" height="235" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5,3"/>
+      <text x="28" y="34" font-size="11" font-weight="700" fill="#475569">MÓDULO 1 &amp; 2: SEGURIDAD Y ORGANIZACIÓN (CRUD 1-2)</text>
+
+      <rect x="415" y="15" width="810" height="235" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5,3"/>
+      <text x="428" y="34" font-size="11" font-weight="700" fill="#475569">MÓDULO 3 &amp; 5: CLIENTES, VEHÍCULOS Y CITAS (CRUD 3, 4, 8, 10)</text>
+
+      <rect x="15" y="270" width="380" height="530" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5,3"/>
+      <text x="28" y="289" font-size="11" font-weight="700" fill="#475569">MÓDULO 4 &amp; 6: CATÁLOGO TÉCNICO Y ALMACÉN (CRUD 5, 9, 11-13)</text>
+
+      <rect x="415" y="270" width="810" height="530" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-dasharray="5,3"/>
+      <text x="428" y="289" font-size="11" font-weight="700" fill="#1d4ed8">MÓDULO 7, 8 &amp; 9: CIRCUITO OPERATIVO OR, FACTURACIÓN, ALERTAS Y LOGS (CRUD 6, 7, 14, 15)</text>
+
+      <!-- ==================== LÍNEAS DE CLAVES FORÁNEAS (FK) ==================== -->
+      <g stroke="#2563eb" stroke-width="1.5" fill="none">
+        <!-- roles -> usuarios -->
+        <path d="M 165 110 L 195 110"/>
+        <!-- usuarios -> audit_logs -->
+        <path d="M 380 125 L 995 125 L 995 660"/>
+        <!-- marcas -> modelos -> vehiculos -->
+        <path d="M 1015 95 L 975 95"/>
+        <path d="M 800 95 L 760 95"/>
+        <!-- clientes -> vehiculos -->
+        <path d="M 565 95 L 595 95"/>
+        <!-- clientes & vehiculos -> citas -->
+        <path d="M 565 170 L 800 170"/>
+        <path d="M 760 140 L 800 160"/>
+        <!-- vehiculos -> ordenes_reparacion -->
+        <path d="M 675 180 L 675 315"/>
+        <!-- usuarios -> ordenes_reparacion -->
+        <path d="M 380 155 L 440 155 L 440 365 L 555 365"/>
+        <!-- ordenes_reparacion -> lineas_or -->
+        <path d="M 660 495 L 660 555"/>
+        <!-- familias_servicio -> servicios -->
+        <path d="M 185 370 L 210 370"/>
+        <!-- servicios -> lineas_or -->
+        <path d="M 380 410 L 470 410 L 470 605 L 555 605"/>
+        <!-- categorias & proveedores -> recambios -->
+        <path d="M 185 560 L 210 560"/>
+        <path d="M 185 695 L 210 660"/>
+        <!-- recambios -> lineas_or -->
+        <path d="M 380 630 L 555 630"/>
+        <!-- ordenes_reparacion -> facturas <- formas_pago -->
+        <path d="M 765 390 L 815 390"/>
+        <path d="M 1035 390 L 990 390"/>
+        <!-- vehiculos / OR -> alertas_mantenimiento -->
+        <path d="M 765 445 L 815 575"/>
+      </g>
+
+      <!-- Helper macro style via explicit clean SVG boxes -->
+      <!-- 1. ROLES -->
+      <g transform="translate(25, 50)">
+        <rect width="140" height="82" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="140" height="22" rx="4" fill="#1e293b"/>
+        <text x="70" y="15" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">roles</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_rol</text>
+        <text x="8" y="54" font-size="10" fill="#334155">nombre (UQ)</text>
+        <text x="8" y="70" font-size="10" fill="#334155">descripcion</text>
+      </g>
+
+      <!-- 2. USUARIOS -->
+      <g transform="translate(195, 50)">
+        <rect width="185" height="125" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="185" height="22" rx="4" fill="#1e293b"/>
+        <text x="92" y="15" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">usuarios (CRUD 1)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_usuario</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_rol → roles</text>
+        <text x="8" y="68" font-size="10" fill="#334155">username (UQ)</text>
+        <text x="8" y="83" font-size="10" fill="#334155">password_hash</text>
+        <text x="8" y="98" font-size="10" fill="#334155">nombre_completo, email</text>
+        <text x="8" y="113" font-size="10" fill="#334155">activo, fecha_creacion</text>
+      </g>
+
+      <!-- 3. ORGANIZACION -->
+      <g transform="translate(25, 148)">
+        <rect width="155" height="92" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="155" height="22" rx="4" fill="#1e293b"/>
+        <text x="77" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">organizacion (CRUD 2)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_organizacion</text>
+        <text x="8" y="53" font-size="10" fill="#334155">razon_social, cif (UQ)</text>
+        <text x="8" y="68" font-size="10" fill="#334155">direccion, ciudad, tel</text>
+        <text x="8" y="83" font-size="10" fill="#334155">tarifa_hora_ut, iva_defecto</text>
+      </g>
+
+      <!-- 4. CLIENTES -->
+      <g transform="translate(425, 50)">
+        <rect width="140" height="145" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="140" height="22" rx="4" fill="#1e293b"/>
+        <text x="70" y="15" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">clientes (CRUD 3)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_cliente</text>
+        <text x="8" y="54" font-size="10" fill="#334155">tipo_cliente (ENUM)</text>
+        <text x="8" y="70" font-size="10" fill="#334155">dni_cif (UQ)</text>
+        <text x="8" y="86" font-size="10" fill="#334155">nombre_razon_social</text>
+        <text x="8" y="102" font-size="10" fill="#334155">telefono, email</text>
+        <text x="8" y="118" font-size="10" fill="#334155">direccion, activo</text>
+        <text x="8" y="134" font-size="10" fill="#334155">fecha_alta</text>
+      </g>
+
+      <!-- 5. VEHICULOS -->
+      <g transform="translate(595, 50)">
+        <rect width="165" height="130" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="165" height="22" rx="4" fill="#1e293b"/>
+        <text x="82" y="15" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">vehiculos (CRUD 4)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_vehiculo</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_cliente → clientes</text>
+        <text x="8" y="68" font-size="10" font-weight="700" fill="#2563eb">FK id_modelo → modelos</text>
+        <text x="8" y="83" font-size="10" fill="#334155">matricula (UQ), vin (UQ)</text>
+        <text x="8" y="98" font-size="10" fill="#334155">anio_matriculacion</text>
+        <text x="8" y="113" font-size="10" fill="#334155">kilometraje_actual, activo</text>
+      </g>
+
+      <!-- 6. MODELOS -->
+      <g transform="translate(800, 50)">
+        <rect width="175" height="82" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="175" height="22" rx="4" fill="#1e293b"/>
+        <text x="87" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">modelos (CRUD 8)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_modelo</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_marca → marcas</text>
+        <text x="8" y="68" font-size="10" fill="#334155">nombre, activo</text>
+      </g>
+
+      <!-- 7. MARCAS -->
+      <g transform="translate(1015, 50)">
+        <rect width="145" height="72" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="145" height="22" rx="4" fill="#1e293b"/>
+        <text x="72" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">marcas (CRUD 8)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_marca</text>
+        <text x="8" y="54" font-size="10" fill="#334155">nombre (UQ), activo</text>
+      </g>
+
+      <!-- 8. CITAS -->
+      <g transform="translate(800, 145)">
+        <rect width="215" height="96" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="215" height="22" rx="4" fill="#1e293b"/>
+        <text x="107" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">citas (CRUD 10)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_cita</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_cliente, id_vehiculo, id_asesor</text>
+        <text x="8" y="68" font-size="10" fill="#334155">fecha_hora, motivo_visita</text>
+        <text x="8" y="83" font-size="10" fill="#334155">estado (ENUM)</text>
+      </g>
+
+      <!-- 9. FAMILIAS_SERVICIO -->
+      <g transform="translate(25, 310)">
+        <rect width="160" height="82" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="160" height="22" rx="4" fill="#1e293b"/>
+        <text x="80" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">familias_servicio (CRUD 9)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_familia</text>
+        <text x="8" y="53" font-size="10" fill="#334155">nombre (UQ), descripcion</text>
+        <text x="8" y="68" font-size="10" fill="#334155">activo</text>
+      </g>
+
+      <!-- 10. SERVICIOS -->
+      <g transform="translate(210, 310)">
+        <rect width="170" height="125" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="170" height="22" rx="4" fill="#1e293b"/>
+        <text x="85" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">servicios (CRUD 5)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_servicio</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_familia → familias</text>
+        <text x="8" y="68" font-size="10" fill="#334155">codigo_operacion (UQ)</text>
+        <text x="8" y="83" font-size="10" fill="#334155">descripcion</text>
+        <text x="8" y="98" font-size="10" fill="#334155">unidades_tiempo (UT)</text>
+        <text x="8" y="113" font-size="10" fill="#334155">precio_base, activo</text>
+      </g>
+
+      <!-- 11. CATEGORIAS_RECAMBIO -->
+      <g transform="translate(25, 515)">
+        <rect width="160" height="75" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="160" height="22" rx="4" fill="#1e293b"/>
+        <text x="80" y="15" fill="#fff" font-size="9.5" font-weight="700" text-anchor="middle">categorias_recambio (CRUD 13)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_categoria</text>
+        <text x="8" y="54" font-size="10" fill="#334155">nombre (UQ), activo</text>
+      </g>
+
+      <!-- 12. PROVEEDORES -->
+      <g transform="translate(25, 650)">
+        <rect width="160" height="90" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="160" height="22" rx="4" fill="#1e293b"/>
+        <text x="80" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">proveedores (CRUD 12)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_proveedor</text>
+        <text x="8" y="53" font-size="10" fill="#334155">cif (UQ), razon_social</text>
+        <text x="8" y="68" font-size="10" fill="#334155">telefono, email, activo</text>
+      </g>
+
+      <!-- 13. RECAMBIOS -->
+      <g transform="translate(210, 515)">
+        <rect width="170" height="145" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="170" height="22" rx="4" fill="#1e293b"/>
+        <text x="85" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">recambios (CRUD 11)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_recambio</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_categoria → categorias</text>
+        <text x="8" y="68" font-size="10" font-weight="700" fill="#2563eb">FK id_proveedor → proveedores</text>
+        <text x="8" y="83" font-size="10" fill="#334155">referencia (UQ), denominacion</text>
+        <text x="8" y="98" font-size="10" fill="#334155">precio_coste, precio_venta</text>
+        <text x="8" y="113" font-size="10" fill="#334155">stock_actual, activo</text>
+      </g>
+
+      <!-- 14. ORDENES_REPARACION (Núcleo del 20%) -->
+      <g transform="translate(555, 315)">
+        <rect width="210" height="180" rx="5" fill="#ffffff" stroke="#1d4ed8" stroke-width="2.5"/>
+        <rect width="210" height="24" rx="4" fill="#1d4ed8"/>
+        <text x="105" y="16" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">ordenes_reparacion (CRUD 6)</text>
+        <text x="8" y="40" font-size="10" font-weight="700" fill="#b45309">PK id_or</text>
+        <text x="8" y="55" font-size="10" font-weight="700" fill="#2563eb">FK id_vehiculo → vehiculos</text>
+        <text x="8" y="70" font-size="10" font-weight="700" fill="#2563eb">FK id_asesor → usuarios</text>
+        <text x="8" y="85" font-size="10" font-weight="700" fill="#2563eb">FK id_mecanico → usuarios</text>
+        <text x="8" y="100" font-size="10" fill="#334155">numero_or (UQ), km_entrada</text>
+        <text x="8" y="115" font-size="10" fill="#334155">sintomas_cliente, estado (ENUM)</text>
+        <text x="8" y="130" font-size="10" fill="#334155">fecha_apertura, fecha_cierre</text>
+        <text x="8" y="145" font-size="10" fill="#334155">base_imponible, porcentaje_iva</text>
+        <text x="8" y="160" font-size="10" font-weight="700" fill="#0f172a">total_or</text>
+      </g>
+
+      <!-- 15. LINEAS_OR -->
+      <g transform="translate(555, 555)">
+        <rect width="210" height="145" rx="5" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+        <rect width="210" height="24" rx="4" fill="#b45309"/>
+        <text x="105" y="16" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle">lineas_or (CRUD 7)</text>
+        <text x="8" y="40" font-size="10" font-weight="700" fill="#b45309">PK id_linea</text>
+        <text x="8" y="55" font-size="10" font-weight="700" fill="#2563eb">FK id_or → ordenes_reparacion</text>
+        <text x="8" y="70" font-size="10" font-weight="700" fill="#2563eb">FK id_servicio → servicios (NULL)</text>
+        <text x="8" y="85" font-size="10" font-weight="700" fill="#2563eb">FK id_recambio → recambios (NULL)</text>
+        <text x="8" y="100" font-size="10" fill="#334155">descripcion, cantidad_ut</text>
+        <text x="8" y="115" font-size="10" fill="#334155">precio_unitario, subtotal</text>
+      </g>
+
+      <!-- 16. FACTURAS -->
+      <g transform="translate(815, 315)">
+        <rect width="175" height="145" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="175" height="22" rx="4" fill="#1e293b"/>
+        <text x="87" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">facturas (CRUD 14)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_factura</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_or (UQ) → ordenes</text>
+        <text x="8" y="68" font-size="10" font-weight="700" fill="#2563eb">FK id_forma_pago → f_pago</text>
+        <text x="8" y="83" font-size="10" fill="#334155">numero_factura (UQ)</text>
+        <text x="8" y="98" font-size="10" fill="#334155">fecha_emision, base_imponible</text>
+        <text x="8" y="113" font-size="10" fill="#334155">cuota_iva, total_factura</text>
+        <text x="8" y="128" font-size="10" fill="#334155">estado_cobro (ENUM)</text>
+      </g>
+
+      <!-- 17. FORMAS_PAGO -->
+      <g transform="translate(1035, 345)">
+        <rect width="165" height="75" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+        <rect width="165" height="22" rx="4" fill="#1e293b"/>
+        <text x="82" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">formas_pago (CRUD 15)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_forma_pago</text>
+        <text x="8" y="54" font-size="10" fill="#334155">nombre (UQ), activo</text>
+      </g>
+
+      <!-- 18. ALERTAS_MANTENIMIENTO -->
+      <g transform="translate(815, 510)">
+        <rect width="205" height="125" rx="4" fill="#ffffff" stroke="#059669" stroke-width="1.8"/>
+        <rect width="205" height="22" rx="4" fill="#065f46"/>
+        <text x="102" y="15" fill="#fff" font-size="9.5" font-weight="700" text-anchor="middle">alertas_mantenimiento (HU-12)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_alerta</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_vehiculo → vehiculos</text>
+        <text x="8" y="68" font-size="10" font-weight="700" fill="#2563eb">FK id_or_origen → ordenes</text>
+        <text x="8" y="83" font-size="10" fill="#334155">motivo_alerta, fecha_generacion</text>
+        <text x="8" y="98" font-size="10" fill="#334155">fecha_recomendada, estado</text>
+      </g>
+
+      <!-- 19. AUDIT_LOGS -->
+      <g transform="translate(940, 660)">
+        <rect width="260" height="125" rx="4" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+        <rect width="260" height="22" rx="4" fill="#475569"/>
+        <text x="130" y="15" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">audit_logs (RNF Auditoría - HU-03)</text>
+        <text x="8" y="38" font-size="10" font-weight="700" fill="#b45309">PK id_log</text>
+        <text x="8" y="53" font-size="10" font-weight="700" fill="#2563eb">FK id_usuario → usuarios (NULL)</text>
+        <text x="8" y="68" font-size="10" fill="#334155">username, accion, entidad, id_registro</text>
+        <text x="8" y="83" font-size="10" fill="#334155">detalle (TEXT/JSON), ip_origen</text>
+        <text x="8" y="98" font-size="10" fill="#334155">fecha_evento (TIMESTAMP)</text>
+      </g>
+    </svg>
+  </div>
+
+</div>
+</body>
+</html>
